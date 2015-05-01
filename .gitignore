@@ -1,0 +1,9 @@
+
+
+*.swp
+*.swo
+
+allegro.log
+
+*.exe
+
