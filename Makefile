@@ -12,10 +12,10 @@ FGUI_LIB=flare_gui-0.6.5-mingw-4.8.1
 ALLEGRO_FLARE_LIB=allegro_flare-0.8.5-mingw-4.8.1
 
 
-.PHONY: all flare flare_gui
+.PHONY: all flare flare_gui rebuild
 
 
-all: flare flare_gui
+all: clean flare flare_gui
 
 
 flare: flare_main.o
@@ -32,4 +32,7 @@ flare_main.o:
 	g++ -c -std=gnu++11 flare_main.cpp -I$(ALLEGRO_FLARE_DIR)/include -I$(ALLEGRO_DIR)/include -I$(FGUI_DIR)/include
 
 
+clean:
+	del *.o
+	del .\bin\*.exe
 

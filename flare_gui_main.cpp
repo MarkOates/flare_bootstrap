@@ -8,10 +8,9 @@
 class MyProject : public FGUIScreen
 {
 public:
-	MyProject(Display *display) : FGUIScreen(display) {}
-	void primary_timer_func() override
+	MyProject(Display *display) : FGUIScreen(display)
 	{
-		al_draw_rectangle(200, 200, 340, 280, color::red, 6.0);
+		FGUIButton *button = new FGUIButton(this, 200, 200, 100, 60, "Hello!");
 	}
 };
 
