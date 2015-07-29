@@ -12,10 +12,13 @@ FGUI_LIB=flare_gui-0.6.6-mingw-4.8.1
 ALLEGRO_FLARE_LIB=allegro_flare-0.8.6-mingw-4.8.1
 
 
+
 .PHONY: all clean
 
 
-all: bin/flare_main.exe bin/flare_gui_main.exe
+
+all: bin/flare_main.exe bin/flare_gui_main.exe bin/flare_3d_main.exe
+
 
 
 bin/flare_main.exe: flare_main.o
@@ -24,12 +27,20 @@ bin/flare_main.exe: flare_main.o
 bin/flare_gui_main.exe: flare_gui_main.o
 	g++ flare_gui_main.o -o bin/flare_gui_main -l$(FGUI_LIB) -l$(ALLEGRO_FLARE_LIB) -l$(ALLEGRO_MONOLITH_LIB) -L$(ALLEGRO_FLARE_DIR)/lib -L$(FGUI_DIR)/lib -L$(ALLEGRO_DIR)/lib
 
+bin/flare_3d_main.exe: flare_3d_main.o
+	g++ flare_3d_main.o -o bin/flare_3d_main -lopengl32 -l$(FGUI_LIB) -l$(ALLEGRO_FLARE_LIB) -l$(ALLEGRO_MONOLITH_LIB) -L$(ALLEGRO_FLARE_DIR)/lib -L$(FGUI_DIR)/lib -L$(ALLEGRO_DIR)/lib
+
+
 
 flare_main.o: flare_main.cpp
-	g++ -c -std=gnu++11 flare_main.cpp -I$(ALLEGRO_FLARE_DIR)/include -I$(ALLEGRO_DIR)/include -I$(FGUI_DIR)/include
+	g++ -c -std=gnu++11 flare_main.cpp -I$(ALLEGRO_FLARE_DIR)/include -I$(ALLEGRO_DIR)/include
 
 flare_gui_main.o: flare_gui_main.cpp
 	g++ -c -std=gnu++11 flare_gui_main.cpp -I$(ALLEGRO_FLARE_DIR)/include -I$(ALLEGRO_DIR)/include -I$(FGUI_DIR)/include
+
+flare_3d_main.o: flare_3d_main.cpp
+	g++ -c -std=gnu++11 flare_3d_main.cpp -I$(ALLEGRO_FLARE_DIR)/include -I$(ALLEGRO_DIR)/include -I$(FGUI_DIR)/include
+
 
 
 clean:
