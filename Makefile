@@ -17,7 +17,7 @@ ALLEGRO_FLARE_LIB=allegro_flare-0.8.6-mingw-4.8.1
 
 
 
-all: bin/flare_main.exe bin/flare_gui_main.exe bin/flare_3d_main.exe
+all: bin/flare_main.exe bin/flare_gui_main.exe bin/flare_3d_main.exe bin/vanilla_allegro.exe
 
 
 
@@ -30,6 +30,9 @@ bin/flare_gui_main.exe: flare_gui_main.o
 bin/flare_3d_main.exe: flare_3d_main.o
 	g++ flare_3d_main.o -o bin/flare_3d_main -lopengl32 -l$(FGUI_LIB) -l$(ALLEGRO_FLARE_LIB) -l$(ALLEGRO_MONOLITH_LIB) -L$(ALLEGRO_FLARE_DIR)/lib -L$(FGUI_DIR)/lib -L$(ALLEGRO_DIR)/lib
 
+bin/vanilla_allegro.exe: vanilla_allegro.o
+	g++ vanilla_allegro.o -o bin/vanilla_allegro -l$(ALLEGRO_MONOLITH_LIB) -L$(ALLEGRO_DIR)/lib
+
 
 
 flare_main.o: flare_main.cpp
@@ -40,6 +43,9 @@ flare_gui_main.o: flare_gui_main.cpp
 
 flare_3d_main.o: flare_3d_main.cpp
 	g++ -c -std=gnu++11 flare_3d_main.cpp -I$(ALLEGRO_FLARE_DIR)/include -I$(ALLEGRO_DIR)/include -I$(FGUI_DIR)/include
+
+vanilla_allegro.o: vanilla_allegro.cpp
+	g++ -c vanilla_allegro.cpp -I$(ALLEGRO_DIR)/include
 
 
 
