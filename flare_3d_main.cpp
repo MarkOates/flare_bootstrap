@@ -153,8 +153,7 @@ public:
 	Shader fresnel_shader;
 	Light light;
 
-	// state
-	bool camera_spinning;
+	// params
 	float model_scale;
 
 
@@ -168,7 +167,6 @@ public:
 		, metalic_shader("data/shaders/vertex.glsl", "data/shaders/fragment.glsl")
 		, fresnel_shader("data/shaders/fresnel_vertex.glsl", "data/shaders/fresnel_fragment.glsl")
 		, light(4, 4, 3)
-		, camera_spinning(true)
 		, model_scale(0.4)
 	{
 		camera.stepout = vec3d(0, 1.5, 4);
@@ -194,10 +192,6 @@ public:
 	}
 	void primary_timer_func() override
 	{
-		// spin the camera
-		if (camera_spinning) camera.spin += 1.0 / 60.0 * 0.1;
-
-
 		// setup the render settings
 		al_set_render_state(ALLEGRO_DEPTH_TEST, 1);
 		al_set_render_state(ALLEGRO_WRITE_MASK, ALLEGRO_MASK_DEPTH | ALLEGRO_MASK_RGBA);
@@ -259,20 +253,29 @@ private:
 	FGUIButton *button;
 	FGUIDial *dial;
 
+	// state
+	bool camera_spinning;
+
 public:
 	MyGUIScreen(Display *display, My3DProject *scene)
 		: FGUIScreen(display)
 		, scene(scene)
 		, button(new FGUIButton(this, 110, display->height()-70, 160, 50, "camera spin"))
 		, dial(new FGUIDial(this, 240, display->height()-70, 60))
+		, camera_spinning(true)
 	{
 		dial->set_value(scene->model_scale);
 	}
 	void on_message(FGUIWidget *sender, std::string message) override
 	{
-		if (sender == button) scene->camera_spinning = !scene->camera_spinning;
+		if (sender == button) camera_spinning = !camera_spinning;
 
 		if (sender == dial) scene->model_scale = static_cast<FGUIDial *>(sender)->get_value();
+	}
+	void on_timer() override
+	{
+		// spin the camera
+		if (camera_spinning) scene->camera.spin += 1.0 / 60.0 * 0.1;
 	}
 };
 
