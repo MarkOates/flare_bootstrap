@@ -1,84 +1,8 @@
 
 
 #include <flare_gui/flare_gui.h>
-#include <allegro_flare/model.h>
 #include <allegro5/allegro_opengl.h>
 
-
-
-// In theory, the Shader and the Camera should be in AllegroFlare
-
-
-class Shader
-{
-private:
-	ALLEGRO_SHADER *shader;
-
-public:
-	Shader(const char *vertex_source_filename, const char *fragment_source_filename)
-		// for now, shaders will be GLSL in AllegroFlare.  This should eventually change in the future
-		: shader(al_create_shader(ALLEGRO_SHADER_GLSL))
-	{
-		if (!shader) std::cerr << "There was a problem creating a shader." << std::endl;
-
-		if (!al_attach_shader_source_file(shader, ALLEGRO_VERTEX_SHADER, vertex_source_filename))
-			std::cerr << "There was an error attaching the VERTEX shader source from file:"
-						<< std::endl << al_get_shader_log(shader) << std::endl;
-
-		if (!al_attach_shader_source_file(shader, ALLEGRO_PIXEL_SHADER, fragment_source_filename))
-			std::cerr << "There was an error attaching the FRAGMENT shader source from file:"
-						<< std::endl << al_get_shader_log(shader) << std::endl;
-
-		if (!al_build_shader(shader))
-		{
-			std::cerr << "There were errors when building the shader:" << std::endl;
-			std::cerr << al_get_shader_log(shader) << std::endl;
-		}
-	}
-	~Shader()
-	{
-		al_destroy_shader(shader);
-	}
-
-	// activate and deactivate
-
-	void use()
-	{
-		al_use_shader(shader);
-	}
-	static void stop()
-	{
-		al_use_shader(NULL);
-	}
-
-	// set uniforms and attributes (these apply to the /currently active/ shader)
-
-	static bool set_mat4(const char *name, ALLEGRO_TRANSFORM *t)
-	{
-		return al_set_shader_matrix(name, t);
-	}
-	static bool set_int(const char *name, int i)
-	{
-		return al_set_shader_int(name, i);
-	}
-	static bool set_float(const char *name, float f)
-	{
-		return al_set_shader_float(name, f);
-	}
-	static bool set_bool(const char *name, bool b)
-	{
-		return al_set_shader_bool(name, b);
-	}
-	static bool set_vec3(const char *name, float x, float y, float z)
-	{
-		float vec3[3] = {x, y, z};
-		return al_set_shader_float_vector(name, 3, &vec3[0], 1);
-	}
-	static bool set_vec3(const char *name, const vec3d vec)
-	{
-		set_vec3(name, vec.x, vec.y, vec.z);
-	}
-};
 
 
 
