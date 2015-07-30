@@ -6,6 +6,5 @@
 allegro.log
 
 *.exe
-*.o
-*.obj
+
 
