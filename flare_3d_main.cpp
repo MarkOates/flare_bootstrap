@@ -91,14 +91,14 @@ public:
 		, metalic_shader("data/shaders/vertex.glsl", "data/shaders/fragment.glsl")
 		, fresnel_shader("data/shaders/fresnel_vertex.glsl", "data/shaders/fresnel_fragment.glsl")
 		, light(4, 4, 3)
-		, model_scale(0.4)
+		, model_scale(0.08)
 	{
 		camera.stepout = vec3d(0, 1.5, 4);
 
 		construct.load_obj_file("data/models/construct-beta-01.obj");
 		construct.set_texture(bitmaps["uv.png"]);
 
-		model.load_obj_file("data/models/allegro_flare_unit_logo-04.obj");
+		model.load_obj_file("data/models/allegro_flare_logo-02.obj");
 
 		unit_sphere.load_obj_file("data/models/unit_sphere4.obj", 0.2);
 	}
@@ -137,7 +137,7 @@ public:
 		al_identity_transform(&t);
 		al_rotate_transform_3d(&t, 1, 0, 0, FULL_ROTATION*0.25);
 		al_rotate_transform_3d(&t, 0, 1, 0, al_get_time()*0.5);
-		al_scale_transform_3d(&t, model_scale + 0.5, model_scale + 0.5, model_scale + 0.5);
+		al_scale_transform_3d(&t, model_scale + 0.1, model_scale + 0.1, model_scale + 0.1);
 		al_translate_transform_3d(&t, 0, 1.5, 0);
 		//al_use_transform(&t); < note: this is not needed because transform information is processed in the shader
 
@@ -194,7 +194,7 @@ public:
 	{
 		if (sender == button) camera_spinning = !camera_spinning;
 
-		if (sender == dial) scene->model_scale = static_cast<FGUIDial *>(sender)->get_value();
+		if (sender == dial) scene->model_scale = static_cast<FGUIDial *>(sender)->get_value() / 5.0;
 	}
 	void on_timer() override
 	{
