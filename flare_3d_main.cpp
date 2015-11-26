@@ -116,6 +116,8 @@ public:
 	}
 	void primary_timer_func() override
 	{
+		ALLEGRO_TRANSFORM t;
+
 		// setup the render settings
 		al_set_render_state(ALLEGRO_DEPTH_TEST, 1);
 		al_set_render_state(ALLEGRO_WRITE_MASK, ALLEGRO_MASK_DEPTH | ALLEGRO_MASK_RGBA);
@@ -133,7 +135,6 @@ public:
 
 
 		// draw our (rotating) model in the center of the world
-		ALLEGRO_TRANSFORM t;
 		al_identity_transform(&t);
 		al_rotate_transform_3d(&t, 1, 0, 0, FULL_ROTATION*0.25);
 		al_rotate_transform_3d(&t, 0, 1, 0, al_get_time()*0.5);
@@ -142,9 +143,9 @@ public:
 		//al_use_transform(&t); < note: this is not needed because transform information is processed in the shader
 
 		metalic_shader.use();
-		metalic_shader.set_vec3("camera_position", camera.get_real_position());
-		metalic_shader.set_vec3("light_position", light.position);
-		metalic_shader.set_mat4("position_transform", &t);
+		Shader::set_vec3("camera_position", camera.get_real_position());
+		Shader::set_vec3("light_position", light.position);
+		Shader::set_mat4("position_transform", &t);
 
 		model.draw();
 
@@ -154,9 +155,9 @@ public:
 		al_translate_transform_3d(&t, light.position.x, light.position.y, light.position.z);
 
 		fresnel_shader.use();
-		metalic_shader.set_vec3("camera_position", camera.get_real_position());
-		metalic_shader.set_vec3("light_position", light.position);
-		metalic_shader.set_mat4("position_transform", &t);
+		Shader::set_vec3("camera_position", camera.get_real_position());
+		Shader::set_vec3("light_position", light.position);
+		Shader::set_mat4("position_transform", &t);
 
 		unit_sphere.draw();
 
