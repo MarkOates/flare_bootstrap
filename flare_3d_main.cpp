@@ -88,7 +88,7 @@ public:
 		, construct()
 		, model()
 		, unit_sphere()
-		, metalic_shader("data/shaders/vertex.glsl", "data/shaders/fragment.glsl")
+		, metalic_shader("data/shaders/metalic_vertex.glsl", "data/shaders/metalic_fragment.glsl")
 		, fresnel_shader("data/shaders/fresnel_vertex.glsl", "data/shaders/fresnel_fragment.glsl")
 		, light(4, 4, 3)
 		, model_scale(0.08)
