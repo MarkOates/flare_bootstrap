@@ -5,6 +5,12 @@
 
 allegro.log
 
-*.exe
+
+
+# ignore all the files in the bin directory
+# except whatever is in the data folder
+
+bin/*
+!bin/data
 
 
