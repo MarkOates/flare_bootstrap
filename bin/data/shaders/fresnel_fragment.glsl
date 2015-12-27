@@ -5,7 +5,7 @@ uniform sampler2D al_tex;
 varying vec3 surface_normal;
 varying vec3 world_position;
 varying vec2 texture_coords;
-#define _sharpness 1 
+#define _sharpness 1.0
 
 void main()
 {

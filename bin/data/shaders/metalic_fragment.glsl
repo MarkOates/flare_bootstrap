@@ -6,7 +6,7 @@ uniform vec3 light_position;
 varying vec3 surface_normal;
 varying vec3 world_position;
 varying vec2 texture_coords;
-#define _sharpness 2 
+#define _sharpness 2.0
 
 void main()
 {
@@ -32,8 +32,8 @@ void main()
 	// specular
 	float specular_intensity = dot((2.0 * reflectance * N - L), V);
 	specular_intensity = max(0.0, specular_intensity);
-	specular_intensity = pow(specular_intensity, 1);
-	float spec2 = pow(specular_intensity, 50) * 100;
+	specular_intensity = pow(specular_intensity, 1.0);
+	float spec2 = pow(specular_intensity, 50.0) * 100.0;
 
 	// assign the color to the fragment
 	texture_fragment *= 2.0;
