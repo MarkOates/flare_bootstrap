@@ -213,6 +213,7 @@ int main(int argc, char **argv)
 	My3DProject *proj = new My3DProject(display);
 	MyGUIScreen *gui = new MyGUIScreen(display, proj);
 	af::run_loop();
+	return 0;
 }
 
 
