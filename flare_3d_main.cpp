@@ -95,7 +95,7 @@ public:
 	{
 		camera.stepout = vec3d(0, 1.5, 4);
 
-		construct.load_obj_file("data/models/construct-beta-01.obj");
+		construct.load_obj_file("data/models/construct-beta-02.obj");
 		construct.set_texture(bitmaps["uv.png"]);
 
 		model.load_obj_file("data/models/allegro_flare_logo-02.obj");
