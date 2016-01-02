@@ -20,6 +20,8 @@ int main(int argc, char* argv[])
 	al_flip_display();
 
 	al_rest(2);
+
+	return 0;
 }
 
 
