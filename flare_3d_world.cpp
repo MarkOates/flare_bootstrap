@@ -99,6 +99,7 @@ public:
   ALLEGRO_BITMAP *specular_texture;
   ALLEGRO_FLARE_CUBEMAP_TEXTURE *cube_map_A;
   ALLEGRO_FLARE_CUBEMAP_TEXTURE *cube_map_B;
+  bool cube_map_reflecting;
 
   Entity()
 	  : model(NULL)
@@ -109,6 +110,7 @@ public:
 	  , specular_texture(NULL)
 	  , cube_map_A(NULL)
 	  , cube_map_B(NULL)
+	  , cube_map_reflecting(true)
   {}
 
   void draw(vec3d camera_position, vec3d light_position)
@@ -128,7 +130,7 @@ public:
 			Shader::set_vec3("light_position", light_position);
 			Shader::set_mat4("position_transform", &transform);
 
-			Shader::set_bool("reflecting", true);
+			Shader::set_bool("reflecting", cube_map_reflecting);
 
 			Shader::set_sampler("diffuse_texture", diffuse_texture, 2);
 			Shader::set_sampler("specular_texture", specular_texture, 3);
@@ -197,7 +199,7 @@ public:
 	Light light;
 
 	std::vector<Entity *> entities;
-
+   Entity *skybox;
 
 	My3DProject(Display *display)
 		: Screen(display)
@@ -210,11 +212,21 @@ public:
 		, light(4, 4, 3)
 		, cube_map_A(NULL)
 		, cube_map_B(NULL)
+		, skybox(NULL)
 	{
-		camera.stepout = vec3d(0, 1.5, 4);
+		camera.stepout = vec3d(0, 1.5, 8);
+		camera.tilt = 0.3;
 
 		cube_map_A = glsl_create_cubemap_from_vertical_strip("data/bitmaps/sky4.png");
 		cube_map_B = glsl_create_cubemap_from_vertical_strip("data/bitmaps/sky5.png");
+
+		skybox = new Entity();
+		skybox->model = new ModelNew();
+		skybox->model->load_obj_file("data/models/skybox-01.obj", 30.0/4.0);
+		skybox->shader = &cubemap_shader;
+		skybox->cube_map_A = cube_map_B;
+		skybox->cube_map_B = cube_map_B;
+		skybox->cube_map_reflecting = false;
 
 		construct_scene();
 	}
@@ -228,14 +240,14 @@ public:
 		entity = new Entity();
 		entity->shader = NULL;
 		entity->model = new ModelNew();
-			entity->model->load_obj_file("data/models/construct-beta-02.obj");
+			entity->model->load_obj_file("data/models/flat_stage-01.obj");
 			entity->model->set_texture(bitmaps["uv.png"]);
 		entities.push_back(entity);
 
 		// add some nice models for us to look at
 		ModelNew *a_nice_model = new ModelNew();
-		a_nice_model->load_obj_file("data/models/allegro_flare_logo-03b.obj", 0.3);
-		for (unsigned i=0; i<20; i++)
+		a_nice_model->load_obj_file("data/models/allegro_flare_logo-03b.obj", 0.5);
+		for (unsigned i=0; i<40; i++)
 		{
 			entity = new Entity();
 			entity->model = a_nice_model;
@@ -288,13 +300,18 @@ public:
 		//
 		// DRAW
 		//
+
 		// the functionality of this line might eventually be embedded in the framework
 		setup_projection();
-
 
 		// draw the entities in our scene
 		vec3d camera_position = camera.get_real_position();
 		vec3d light_position = light.position;
+
+		// draw the skybox (and clear the depth buffer)
+		skybox->place.position = camera_position;
+		skybox->draw(0, 0);
+		al_clear_depth_buffer(1);
 
 		for (unsigned i=0; i<entities.size(); i++)
 		{
