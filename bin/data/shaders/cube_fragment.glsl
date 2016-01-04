@@ -2,7 +2,8 @@
 
 varying vec3 normal;
 varying vec3 eye_dir;
-uniform samplerCube cube_map;
+uniform samplerCube cube_map_A;
+uniform samplerCube cube_map_B;
 //uniform sampler2D al_tex;
 uniform bool reflecting;
 
@@ -17,6 +18,7 @@ void main()
 	incoming_angle.x = -incoming_angle.x;
 	//incoming_angle.z = -incoming_angle.z;
 
-	vec4 color = textureCube(cube_map, incoming_angle);
+	vec4 color = textureCube(cube_map_A, incoming_angle);
+	//color = textureCube(cube_map_B, incoming_angle);
 	gl_FragColor = color;
 }

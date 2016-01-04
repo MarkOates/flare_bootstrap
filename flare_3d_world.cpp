@@ -76,6 +76,10 @@ private:
 
 		std::cout << "Building Entity::standard_compound_shader." << std::endl;
 		standard_compound_shader = new Shader("data/shaders/standard_compound_vertex.glsl", "data/shaders/standard_compound_fragment.glsl");
+		if (!standard_compound_shader)
+		{
+			std::cout << "There was a problem creating the compound shader for Entity" << std::endl;
+		}
 		return standard_compound_shader;
 	}
 
@@ -181,12 +185,12 @@ public:
 	Camera3 camera;
 	//ModelNew construct;
 	//ModelNew model;
-	ModelNew *current_model;
+	//ModelNew *current_model;
 	//ModelNew unit_sphere;
 	//Shader metalic_shader;
 	//Shader fresnel_shader;
 	Shader cubemap_shader;
-	Shader multi_shader;
+	//Shader multi_shader;
 	//Shader *current_shader;
 	ALLEGRO_FLARE_CUBEMAP_TEXTURE *cube_map_A;
 	ALLEGRO_FLARE_CUBEMAP_TEXTURE *cube_map_B;
@@ -202,7 +206,7 @@ public:
 		//, metalic_shader("data/shaders/metalic_vertex.glsl", "data/shaders/metalic_fragment.glsl")
 		//, fresnel_shader("data/shaders/fresnel_vertex.glsl", "data/shaders/fresnel_fragment.glsl")
 		, cubemap_shader("data/shaders/cube_vertex.glsl", "data/shaders/cube_fragment.glsl")
-		, multi_shader("data/shaders/multi_vertex.glsl", "data/shaders/multi_fragment.glsl")
+		//, multi_shader("data/shaders/multi_vertex.glsl", "data/shaders/multi_fragment.glsl")
 		, light(4, 4, 3)
 		, cube_map_A(NULL)
 		, cube_map_B(NULL)
@@ -231,7 +235,7 @@ public:
 		// add some nice models for us to look at
 		ModelNew *a_nice_model = new ModelNew();
 		a_nice_model->load_obj_file("data/models/allegro_flare_logo-03b.obj", 0.3);
-		for (unsigned i=0; i<100; i++)
+		for (unsigned i=0; i<20; i++)
 		{
 			entity = new Entity();
 			entity->model = a_nice_model;
@@ -240,9 +244,10 @@ public:
 			entity->place.rotation = vec3d(random_float(0, 1), random_float(0, 1), random_float(0, 1));
 			entity->velocity.rotation = vec3d(random_float(0, 0.001), random_float(0, 0.001), random_float(0, 0.001));
 			entities.push_back(entity);
-			if (i%2 == 0)
+			if ((i%2) == 0)
 			{
 				entity->shader = &cubemap_shader;
+				entity->cube_map_A = cube_map_A;
 				entity->cube_map_B = cube_map_B;
 			}
 		}

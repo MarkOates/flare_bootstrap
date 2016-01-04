@@ -8,7 +8,8 @@ uniform vec3 camera_position;
 
 varying vec3 normal;
 varying vec3 eye_dir;
-uniform samplerCube cube_map;
+uniform samplerCube cube_map_A;
+uniform samplerCube cube_map_B;
 
 void main()
 {
