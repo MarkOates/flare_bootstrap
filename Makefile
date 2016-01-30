@@ -2,13 +2,15 @@
 
 
 # here are the directories of the projects 
-ALLEGRO_DIR=E:/allegro-5.1.11-mingw-edgar
-ALLEGRO_FLARE_DIR=E:/allegro_flare
-FGUI_DIR=E:/flare_gui
+LIBS_ROOT=E:
+# LIBS_ROOT=/Users/markoates/Repos
+ALLEGRO_DIR=$(LIBS_ROOT)/allegro-5.1.13
+ALLEGRO_FLARE_DIR=$(LIBS_ROOT)/allegro_flare
+FGUI_DIR=$(LIBS_ROOT)/flare_gui
 
-ALLEGRO_DIR=/Users/markoates/Repos/allegro/build
-ALLEGRO_FLARE_DIR=/Users/markoates/Repos/allegro_flare
-FGUI_DIR=/Users/markoates/Repos/flare_gui
+# ALLEGRO_DIR=$(LIBS_ROOT)/allegro/build
+# ALLEGRO_FLARE_DIR=$(LIBS_ROOT)/allegro_flare
+# FGUI_DIR=$(LIBS_ROOT)/flare_gui
 
 # these are the names of the libs you are linking
 ALLEGRO_MONOLITH_LIB=allegro_monolith-debug.dll
