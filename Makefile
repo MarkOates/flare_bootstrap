@@ -41,13 +41,13 @@ bin/flare_gui_main$(EXE_EXTENSION): obj/flare_gui_main.o
 	g++ obj/flare_gui_main.o -o bin/flare_gui_main -l$(FGUI_LIB) -l$(ALLEGRO_FLARE_LIB) $(ALLEGRO_LIBS) -L$(ALLEGRO_FLARE_DIR)/lib -L$(FGUI_DIR)/lib -L$(ALLEGRO_DIR)/lib
 
 bin/flare_3d_main$(EXE_EXTENSION): obj/flare_3d_main.o
-	g++ obj/flare_3d_main.o -o bin/flare_3d_main $(OPENGL_LIB) -l$(FGUI_LIB) -l$(ALLEGRO_FLARE_LIB) $(ALLEGRO_LIBS) -L$(ALLEGRO_FLARE_DIR)/lib -L$(FGUI_DIR)/lib -L$(ALLEGRO_DIR)/lib
+	g++ obj/flare_3d_main.o -o bin/flare_3d_main -l$(FGUI_LIB) -l$(ALLEGRO_FLARE_LIB) $(ALLEGRO_LIBS) -L$(ALLEGRO_FLARE_DIR)/lib -L$(FGUI_DIR)/lib -L$(ALLEGRO_DIR)/lib $(OPENGL_LIB)
 
 bin/flare_3d_face$(EXE_EXTENSION): obj/flare_3d_face.o
-	g++ obj/flare_3d_face.o -o bin/flare_3d_face $(OPENGL_LIB) -l$(FGUI_LIB) -l$(ALLEGRO_FLARE_LIB) $(ALLEGRO_LIBS) -L$(ALLEGRO_FLARE_DIR)/lib -L$(FGUI_DIR)/lib -L$(ALLEGRO_DIR)/lib
+	g++ obj/flare_3d_face.o -o bin/flare_3d_face -l$(FGUI_LIB) -l$(ALLEGRO_FLARE_LIB) $(ALLEGRO_LIBS) -L$(ALLEGRO_FLARE_DIR)/lib -L$(FGUI_DIR)/lib -L$(ALLEGRO_DIR)/lib $(OPENGL_LIB)
 
 bin/flare_3d_world$(EXE_EXTENSION): obj/flare_3d_world.o
-	g++ obj/flare_3d_world.o -o bin/flare_3d_world $(OPENGL_LIB) -l$(FGUI_LIB) -l$(ALLEGRO_FLARE_LIB) $(ALLEGRO_LIBS) -L$(ALLEGRO_FLARE_DIR)/lib -L$(FGUI_DIR)/lib -L$(ALLEGRO_DIR)/lib
+	g++ obj/flare_3d_world.o -o bin/flare_3d_world -l$(FGUI_LIB) -l$(ALLEGRO_FLARE_LIB) $(ALLEGRO_LIBS) -L$(ALLEGRO_FLARE_DIR)/lib -L$(FGUI_DIR)/lib -L$(ALLEGRO_DIR)/lib $(OPENGL_LIB)
 
 bin/vanilla_allegro$(EXE_EXTENSION): obj/vanilla_allegro.o
 	g++ obj/vanilla_allegro.o -o bin/vanilla_allegro $(ALLEGRO_LIBS) -L$(ALLEGRO_DIR)/lib
