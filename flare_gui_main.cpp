@@ -1,6 +1,6 @@
 
 
-#include <flare_gui/flare_gui.h>
+#include <allegro_flare/allegro_flare.h>
 
 
 
