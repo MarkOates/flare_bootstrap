@@ -24,7 +24,7 @@ OPENGL_LIB=-framework OpenGL
 
 
 
-all: bin/flare_main$(EXE_EXTENSION) bin/flare_gui_main$(EXE_EXTENSION) bin/flare_3d_main$(EXE_EXTENSION) bin/flare_3d_face$(EXE_EXTENSION) bin/flare_3d_world$(EXE_EXTENSION) bin/flare_3d_shadows$(EXE_EXTENSION) bin/vanilla_allegro$(EXE_EXTENSION)
+all: bin/flare_main$(EXE_EXTENSION) bin/flare_gui_main$(EXE_EXTENSION) bin/flare_3d_main$(EXE_EXTENSION) bin/flare_3d_face$(EXE_EXTENSION) bin/flare_3d_world$(EXE_EXTENSION) bin/flare_3d_shadows$(EXE_EXTENSION) bin/simple_3d$(EXE_EXTENSION) bin/vanilla_allegro$(EXE_EXTENSION)
 
 
 
@@ -45,6 +45,9 @@ bin/flare_3d_world$(EXE_EXTENSION): obj/flare_3d_world.o
 
 bin/flare_3d_shadows$(EXE_EXTENSION): obj/flare_3d_shadows.o
 	g++ obj/flare_3d_shadows.o -o bin/flare_3d_shadows -l$(ALLEGRO_FLARE_LIB) $(ALLEGRO_LIBS) -L$(ALLEGRO_FLARE_DIR)/lib -L$(ALLEGRO_DIR)/lib $(OPENGL_LIB)
+
+bin/simple_3d$(EXE_EXTENSION): obj/simple_3d.o
+	g++ obj/simple_3d.o -o bin/simple_3d -l$(ALLEGRO_FLARE_LIB) $(ALLEGRO_LIBS) -L$(ALLEGRO_FLARE_DIR)/lib -L$(ALLEGRO_DIR)/lib $(OPENGL_LIB)
 
 bin/vanilla_allegro$(EXE_EXTENSION): obj/vanilla_allegro.o
 	g++ obj/vanilla_allegro.o -o bin/vanilla_allegro $(ALLEGRO_LIBS) -L$(ALLEGRO_DIR)/lib
@@ -67,6 +70,9 @@ obj/flare_3d_world.o: flare_3d_world.cpp
 	g++ -o $@ -c -std=gnu++11 $< -I$(ALLEGRO_FLARE_DIR)/include -I$(ALLEGRO_DIR)/include
 
 obj/flare_3d_shadows.o: flare_3d_shadows.cpp
+	g++ -o $@ -c -std=gnu++11 $< -I$(ALLEGRO_FLARE_DIR)/include -I$(ALLEGRO_DIR)/include
+
+obj/simple_3d.o: simple_3d.cpp
 	g++ -o $@ -c -std=gnu++11 $< -I$(ALLEGRO_FLARE_DIR)/include -I$(ALLEGRO_DIR)/include
 
 obj/vanilla_allegro.o: vanilla_allegro.cpp
