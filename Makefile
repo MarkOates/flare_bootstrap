@@ -8,7 +8,7 @@ ALLEGRO_DIR=$(LIBS_ROOT)/allegro5/build
 ALLEGRO_FLARE_DIR=$(LIBS_ROOT)/allegro_flare
 
 # these are the names of the libs you are linking
-ALLEGRO_FLARE_LIB=allegro_flare-0.8.7wip
+ALLEGRO_FLARE_LIB=allegro_flare-0.8.8wip
 ALLEGRO_LIBS=-lallegro_color -lallegro_font -lallegro_ttf -lallegro_dialog -lallegro_audio -lallegro_acodec -lallegro_primitives -lallegro_image -lallegro_main -lallegro
 
 EXE_EXTENSION=

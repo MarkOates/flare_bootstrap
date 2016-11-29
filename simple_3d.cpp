@@ -11,10 +11,10 @@ class SimpleEntity
 public:
    placement3d place;
    placement3d velocity;
-   ModelNew *model;
+   Model3D *model;
    ALLEGRO_BITMAP *texture;
 
-   SimpleEntity(ModelNew *model, ALLEGRO_BITMAP *texture=NULL)
+   SimpleEntity(Model3D *model, ALLEGRO_BITMAP *texture=NULL)
       : place()
       , velocity()
       , model(model)
@@ -55,13 +55,13 @@ public:
 
    void load_scene()
    {
-      SimpleEntity *e = new SimpleEntity(af::models["coin_ring-01.obj"]);
+      SimpleEntity *e = new SimpleEntity(Framework::model("coin_ring-01.obj"));
       entities.push_back(e);
 
       for (unsigned i=0; i<10; i++)
       {
-         SimpleEntity *e = new SimpleEntity(af::models["coin_ring-01.obj"]);
-         e->texture = af::bitmaps["uv.png"];
+         SimpleEntity *e = new SimpleEntity(Framework::model("coin_ring-01.obj"));
+         e->texture = Framework::bitmap("uv.png");
          e->place.position.x = random_float(-2, 2);
          e->place.position.y = random_float(-2, 2);
          e->place.position.z = random_float(-2, 2);
@@ -112,10 +112,10 @@ private:
 
 int main(int argc, char **argv)
 {
-   af::initialize();
-   Display *display = af::create_display(800, 600, ALLEGRO_OPENGL | ALLEGRO_PROGRAMMABLE_PIPELINE);
+   Framework::initialize();
+   Display *display = Framework::create_display(800, 600, ALLEGRO_OPENGL | ALLEGRO_PROGRAMMABLE_PIPELINE);
    Project *project = new Project(display);
-   af::run_loop();
+   Framework::run_loop();
    return 0;
 }
 
