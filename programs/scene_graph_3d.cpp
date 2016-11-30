@@ -16,6 +16,8 @@ public:
    Model3D *model;
    ALLEGRO_BITMAP *texture;
 
+   bool renders_self, renders_children;
+
    Entity3D(ElementID *parent, std::string name, Model3D *model=nullptr, ALLEGRO_BITMAP *texture=nullptr)
       : ElementID(parent)
       , name(name)
@@ -23,6 +25,8 @@ public:
       , velocity()
       , model(model)
       , texture(texture)
+      , renders_self(true)
+      , renders_children(true)
    {
       Attributes::bind("name", &name);
       velocity.align = vec3d(0, 0, 0);
@@ -31,10 +35,10 @@ public:
 
    void _draw()
    {
-      place.start_transform();
-      for (auto &child : get_children<Entity3D>()) child->_draw();
-      draw();
-      place.restore_transform();
+      if (renders_self || renders_children) place.start_transform();
+      if (renders_children) for (auto &child : get_children<Entity3D>()) child->_draw();
+      if (renders_self) draw();
+      if (renders_self || renders_children) place.restore_transform();
    }
 
    virtual void draw()
@@ -59,20 +63,23 @@ class Project : public Screen
 {
 public:
    Entity3D scene_root;
-   Entity3D camera;
 
    Project(Display *display)
       : Screen(display)
       , scene_root(nullptr, "root")
-      , camera(nullptr, "camera")
    {
-      camera.place.anchor = vec3d(0, 0, 5);
-      camera.velocity.rotation.y = 0.001;
       load_scene();
    }
 
    void load_scene()
    {
+      // create the camera
+      Entity3D *camera = new Entity3D(&scene_root, "camera");
+      camera->place.anchor = vec3d(0, 0, 5);
+      camera->velocity.rotation.y = 0.001;
+      camera->renders_self = false;
+      camera->renders_children = false;
+
       // create the coin in the middle of the world
       new Entity3D(&scene_root, "coin", Framework::model("coin_ring-01.obj"));
 
@@ -87,14 +94,11 @@ public:
          e->place.rotation.y = random_float(0, 1.0);
          e->velocity.rotation.y = 0.005;
       }
-
    }
 
    void update_scene()
    {
       for (auto &e : scene_root.get_flat_list_of_descendants<Entity3D>()) e->place += e->velocity;
-
-      camera.place += camera.velocity;
    }
 
    void draw_scene()
@@ -105,10 +109,12 @@ public:
       al_clear_depth_buffer(1);
 
       ALLEGRO_TRANSFORM t;
-      camera.place.build_reverse_transform(&t);
+      Entity3D *camera = static_cast<Entity3D *>(scene_root.find_first("name", "camera"));
+      if (camera) camera->place.build_reverse_transform(&t);
+      else al_identity_transform(&t);
       set_projection(backbuffer_sub_bitmap, &t);
 
-      // draw our entities
+      // draw our scene
       scene_root._draw();
    }
 
