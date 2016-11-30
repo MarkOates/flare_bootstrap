@@ -86,7 +86,7 @@ private:
 public:
   placement3d place;
   placement3d velocity;
-  ModelNew *model;
+  Model3D *model;
   bool shader_applies_transform;
 
   // Eventually, there could be n shaders for each model
@@ -185,10 +185,10 @@ public:
 
 	// assets
 	Camera3 camera;
-	//ModelNew construct;
-	//ModelNew model;
-	//ModelNew *current_model;
-	//ModelNew unit_sphere;
+	//Model3D construct;
+	//Model3D model;
+	//Model3D *current_model;
+	//Model3D unit_sphere;
 	//Shader metalic_shader;
 	//Shader fresnel_shader;
 	Shader cubemap_shader;
@@ -221,7 +221,7 @@ public:
 		cube_map_B = glsl_create_cubemap_from_vertical_strip("data/bitmaps/sky5.png");
 
 		skybox = new Entity();
-		skybox->model = new ModelNew();
+		skybox->model = new Model3D();
 		skybox->model->load_obj_file("data/models/skybox-01.obj", 30.0/4.0);
 		skybox->shader = &cubemap_shader;
 		skybox->cube_map_A = cube_map_B;
@@ -239,13 +239,13 @@ public:
 		// add the Construct
 		entity = new Entity();
 		entity->shader = NULL;
-		entity->model = new ModelNew();
+		entity->model = new Model3D();
 			entity->model->load_obj_file("data/models/flat_stage-01.obj");
 			entity->model->set_texture(bitmaps["uv.png"]);
 		entities.push_back(entity);
 
 		// add some nice models for us to look at
-		ModelNew *a_nice_model = new ModelNew();
+		Model3D *a_nice_model = new Model3D();
 		a_nice_model->load_obj_file("data/models/allegro_flare_logo-03b.obj", 0.5);
 		for (unsigned i=0; i<40; i++)
 		{
@@ -333,26 +333,26 @@ public:
 
 
 
-class MyGUIScreen : public FGUIScreen
+class MyGUIScreen : public UIScreen
 {
 private:
 	My3DProject *scene;
-	FGUIToggleButton *button;
-	FGUIListSpinner *shader_choice_spinner;
+	UIToggleButton *button;
+	UIListSpinner *shader_choice_spinner;
 
 	// state
 	bool camera_spinning;
 
 public:
 	MyGUIScreen(Display *display, My3DProject *scene)
-		: FGUIScreen(display)
+		: UIScreen(display)
 		, scene(scene)
-		, button(new FGUIToggleButton(this, 110, display->height()-70, 160, 50, "camera spin"))
+		, button(new UIToggleButton(this, 110, display->height()-70, 160, 50, "camera spin"))
 		, camera_spinning(false)
 	{
 		button->toggle();
 	}
-	void on_message(FGUIWidget *sender, std::string message) override
+	void on_message(UIWidget *sender, std::string message) override
 	{
 		if (sender == button) camera_spinning = !camera_spinning;
 	}
@@ -368,11 +368,11 @@ public:
 
 int main(int argc, char **argv)
 {
-	af::initialize();
-	Display *display = af::create_display(960*2, 600*2, ALLEGRO_OPENGL | ALLEGRO_PROGRAMMABLE_PIPELINE);
+	Framework::initialize();
+	Display *display = Framework::create_display(960*2, 600*2, ALLEGRO_OPENGL | ALLEGRO_PROGRAMMABLE_PIPELINE);
 	My3DProject *proj = new My3DProject(display);
 	MyGUIScreen *gui = new MyGUIScreen(display, proj);
-	af::run_loop();
+	Framework::run_loop();
 	return 0;
 }
 
