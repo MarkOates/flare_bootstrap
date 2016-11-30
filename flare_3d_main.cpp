@@ -70,9 +70,9 @@ public:
 
 	// assets
 	Camera3 camera;
-	ModelNew construct;
-	ModelNew model;
-	ModelNew unit_sphere;
+	Model3D construct;
+	Model3D model;
+	Model3D unit_sphere;
 	Shader metalic_shader;
 	Shader fresnel_shader;
 	Light light;
@@ -171,31 +171,31 @@ public:
 
 
 
-class MyGUIScreen : public FGUIScreen
+class MyGUIScreen : public UIScreen
 {
 private:
 	My3DProject *scene;
-	FGUIButton *button;
-	FGUIDial *dial;
+	UIButton *button;
+	UIDial *dial;
 
 	// state
 	bool camera_spinning;
 
 public:
 	MyGUIScreen(Display *display, My3DProject *scene)
-		: FGUIScreen(display)
+		: UIScreen(display)
 		, scene(scene)
-		, button(new FGUIButton(this, 110, display->height()-70, 160, 50, "camera spin"))
-		, dial(new FGUIDial(this, 240, display->height()-70, 60))
+		, button(new UIButton(this, 110, display->height()-70, 160, 50, "camera spin"))
+		, dial(new UIDial(this, 240, display->height()-70, 60))
 		, camera_spinning(true)
 	{
 		dial->set_value(scene->model_scale);
 	}
-	void on_message(FGUIWidget *sender, std::string message) override
+	void on_message(UIWidget *sender, std::string message) override
 	{
 		if (sender == button) camera_spinning = !camera_spinning;
 
-		if (sender == dial) scene->model_scale = static_cast<FGUIDial *>(sender)->get_value() / 5.0;
+		if (sender == dial) scene->model_scale = static_cast<UIDial *>(sender)->get_value() / 5.0;
 	}
 	void on_timer() override
 	{
@@ -208,11 +208,11 @@ public:
 
 int main(int argc, char **argv)
 {
-	af::initialize();
-	Display *display = af::create_display(960, 600, ALLEGRO_OPENGL | ALLEGRO_PROGRAMMABLE_PIPELINE);
+	Framework::initialize();
+	Display *display = Framework::create_display(960, 600, ALLEGRO_OPENGL | ALLEGRO_PROGRAMMABLE_PIPELINE);
 	My3DProject *proj = new My3DProject(display);
 	MyGUIScreen *gui = new MyGUIScreen(display, proj);
-	af::run_loop();
+	Framework::run_loop();
 	return 0;
 }
 
