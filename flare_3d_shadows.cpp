@@ -89,7 +89,7 @@ private:
 public:
    placement3d place;
    placement3d velocity;
-   ModelNew *model;
+   Model3D *model;
    bool shader_applies_transform;
 
 
@@ -229,10 +229,10 @@ public:
    // assets
    Camera3 camera;
    Camera3 casting_light;
-   //ModelNew construct;
-   //ModelNew model;
-   //ModelNew *current_model;
-   //ModelNew unit_sphere;
+   //Model3D construct;
+   //Model3D model;
+   //Model3D *current_model;
+   //Model3D unit_sphere;
    //Shader metalic_shader;
    //Shader fresnel_shader;
    Shader cubemap_shader;
@@ -288,7 +288,7 @@ public:
       cube_map_B = glsl_create_cubemap_from_vertical_strip("data/bitmaps/sky5_with_grid.png");
 
       skybox = new Entity();
-      skybox->model = new ModelNew();
+      skybox->model = new Model3D();
       skybox->model->load_obj_file("data/models/skybox-01.obj", 30.0/3.0);
       skybox->shader = &cubemap_shader;
       skybox->cube_map_A = cube_map_B;
@@ -306,8 +306,8 @@ public:
       Entity *entity = NULL;
 
       // add some nice models for us to look at
-      ModelNew *a_nice_model = new ModelNew();
-      ModelNew *coin_ring = new ModelNew();
+      Model3D *a_nice_model = new Model3D();
+      Model3D *coin_ring = new Model3D();
       //a_nice_model->load_obj_file("data/models/allegro_flare_logo-03b.obj", 1.25);
       a_nice_model->load_obj_file("data/models/rounded_unit_cube-01.obj", 1.0);
       coin_ring->load_obj_file("data/models/coin_ring-01.obj", 1.0);
@@ -345,7 +345,7 @@ public:
          // add the Construct(s)
          entity = new Entity();
          entity->shader = &simple_map_shader;
-         entity->model = new ModelNew();
+         entity->model = new Model3D();
          entity->model->load_obj_file("data/models/flat_stage-02.obj");
          //entity->model->load_obj_file("data/models/scene_for_lighting-03.obj");
          //entity->model->set_texture(bitmaps["uv.png"]);
@@ -357,9 +357,9 @@ public:
       }
 
       //archway
-      ModelNew *archway = new ModelNew();
+      Model3D *archway = new Model3D();
       archway->load_obj_file("data/models/archway-01.obj", 0.5);
-      ModelNew *stone_fence = new ModelNew();
+      Model3D *stone_fence = new Model3D();
       stone_fence->load_obj_file("data/models/unit_stone_fence-02.obj", 2.0);
       for (int i=0; i<2; i++)
       {
@@ -584,29 +584,29 @@ public:
 
 
 
-class ImageResizer : public FGUIImage
+class ImageResizer : public UIImage
 {
    bool zoomed;
    bool draw_outline;
    public:
-   ImageResizer(FGUIWidget *parent, float x, float y, ALLEGRO_BITMAP *image)
-      : FGUIImage(parent, x, y, image)
+   ImageResizer(UIWidget *parent, float x, float y, ALLEGRO_BITMAP *image)
+      : UIImage(parent, x, y, image)
         , zoomed(false)
         , draw_outline(false)
    {
    }
    void toggle_zoom()
    {
-      float (*interp_func)(float) = interpolator::trippleFastIn;
+      float (*interp_func)(float) = interpolator::tripple_fast_in;
       if (zoomed)
       {
-         af::motion.cmove_to(&place.scale.x, 0.8, 0.4, interp_func);
-         af::motion.cmove_to(&place.scale.y, 0.8, 0.4, interp_func);
+         Framework::motion().cmove_to(&place.scale.x, 0.8, 0.4, interp_func);
+         Framework::motion().cmove_to(&place.scale.y, 0.8, 0.4, interp_func);
       }
       else
       {
-         af::motion.cmove_to(&place.scale.x, 0.2, 0.4, interp_func);
-         af::motion.cmove_to(&place.scale.y, 0.2, 0.4, interp_func);
+         Framework::motion().cmove_to(&place.scale.x, 0.2, 0.4, interp_func);
+         Framework::motion().cmove_to(&place.scale.y, 0.2, 0.4, interp_func);
       }
       zoomed = !zoomed;
    }
@@ -626,33 +626,33 @@ class ImageResizer : public FGUIImage
 
 
 
-class MyGUIScreen : public FGUIScreen
+class MyGUIScreen : public UIScreen
 {
 private:
    My3DProject *scene;
-   FGUIToggleButton *button;
-   FGUIListSpinner *shader_choice_spinner;
-   FGUIDial *offset_x;
-   FGUIDial *offset_y;
+   UIToggleButton *button;
+   UIListSpinner *shader_choice_spinner;
+   UIDial *offset_x;
+   UIDial *offset_y;
    // state
    bool camera_spinning;
    ImageResizer *image;
 
 public:
    MyGUIScreen(Display *display, My3DProject *scene)
-      : FGUIScreen(display)
+      : UIScreen(display)
         , scene(scene)
-        , button(new FGUIToggleButton(this, 110, display->height()-70, 160, 50, "camera spin"))
+        , button(new UIToggleButton(this, 110, display->height()-70, 160, 50, "camera spin"))
         , camera_spinning(false)
-        , offset_x(new FGUIDial(this, 100, 100, 80))
-        , offset_y(new FGUIDial(this, 100, 200, 80))
+        , offset_x(new UIDial(this, 100, 100, 80))
+        , offset_y(new UIDial(this, 100, 200, 80))
         , image(new ImageResizer(this, display->width()-10, 10, scene->shadow_map_depth_pass_surface))
    {
       button->toggle();
       image->place.scale = vec2d(0.2, 0.2);
       image->place.align = vec2d(1.0, 0.0);
    }
-   void on_message(FGUIWidget *sender, std::string message) override
+   void on_message(UIWidget *sender, std::string message) override
    {
       if (sender == button) camera_spinning = !camera_spinning;
       if (sender == offset_x) scene->texture_offset.x = offset_x->get_value();
@@ -670,11 +670,11 @@ public:
 
 int main(int argc, char **argv)
 {
-   af::initialize();
-   Display *display = af::create_display(960*2, 600*2, ALLEGRO_OPENGL | ALLEGRO_PROGRAMMABLE_PIPELINE);
+   Framework::initialize();
+   Display *display = Framework::create_display(960*2, 600*2, ALLEGRO_OPENGL | ALLEGRO_PROGRAMMABLE_PIPELINE);
    My3DProject *proj = new My3DProject(display);
    MyGUIScreen *gui = new MyGUIScreen(display, proj);
-   af::run_loop();
+   Framework::run_loop();
    return 0;
 }
 
