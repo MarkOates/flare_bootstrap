@@ -76,10 +76,10 @@ public:
 
 	// assets
 	Camera3 camera;
-	ModelNew construct;
-	ModelNew model;
-	ModelNew *current_model;
-	ModelNew unit_sphere;
+	Model3D construct;
+	Model3D model;
+	Model3D *current_model;
+	Model3D unit_sphere;
 	ALLEGRO_FLARE_CUBEMAP_TEXTURE *cube_map;
 	Shader metalic_shader;
 	Shader fresnel_shader;
@@ -136,7 +136,7 @@ public:
 		//model.load_obj_file("data/models/male_head.obj", 0.25);
 		std::string full_filename = std::string("data/models/") + filename;
 		if (current_model) delete current_model;
-		current_model = new ModelNew();
+		current_model = new Model3D();
 		current_model->load_obj_file(full_filename.c_str(), 0.25);
 	}
 	void set_shader(std::string shader_identifier)
@@ -223,26 +223,26 @@ public:
 
 
 
-class MyGUIScreen : public FGUIScreen
+class MyGUIScreen : public UIScreen
 {
 private:
 	My3DProject *scene;
-	FGUIToggleButton *button;
-	FGUIListSpinner *model_choice_spinner;
-	FGUIListSpinner *shader_choice_spinner;
-	FGUIDial *dial;
+	UIToggleButton *button;
+	UIListSpinner *model_choice_spinner;
+	UIListSpinner *shader_choice_spinner;
+	UIDial *dial;
 
 	// state
 	bool camera_spinning;
 
 public:
 	MyGUIScreen(Display *display, My3DProject *scene)
-		: FGUIScreen(display)
+		: UIScreen(display)
 		, scene(scene)
-		, button(new FGUIToggleButton(this, 110, display->height()-70, 160, 50, "camera spin"))
-		, model_choice_spinner(new FGUIListSpinner(this, 110, display->height()-120, 160, 30))
-		, shader_choice_spinner(new FGUIListSpinner(this, 110, display->height()-120-60, 160, 30))
-		, dial(new FGUIDial(this, 240, display->height()-70, 60))
+		, button(new UIToggleButton(this, 110, display->height()-70, 160, 50, "camera spin"))
+		, model_choice_spinner(new UIListSpinner(this, 110, display->height()-120, 160, 30))
+		, shader_choice_spinner(new UIListSpinner(this, 110, display->height()-120-60, 160, 30))
+		, dial(new UIDial(this, 240, display->height()-70, 60))
 		, camera_spinning(false)
 	{
 		dial->set_value(scene->model_scale);
@@ -261,10 +261,10 @@ public:
 		shader_choice_spinner->add_item("fresnel");
 		shader_choice_spinner->add_item("metalic");
 	}
-	void on_message(FGUIWidget *sender, std::string message) override
+	void on_message(UIWidget *sender, std::string message) override
 	{
 		if (sender == button) camera_spinning = !camera_spinning;
-		if (sender == dial) scene->model_scale = static_cast<FGUIDial *>(sender)->get_value() / 5.0;
+		if (sender == dial) scene->model_scale = static_cast<UIDial *>(sender)->get_value() / 5.0;
 		if (sender == model_choice_spinner) scene->set_model(model_choice_spinner->get_val());
 		if (sender == shader_choice_spinner) scene->set_shader(shader_choice_spinner->get_val());
 	}
@@ -280,11 +280,11 @@ public:
 
 int main(int argc, char **argv)
 {
-	af::initialize();
-	Display *display = af::create_display(960, 600, ALLEGRO_OPENGL | ALLEGRO_PROGRAMMABLE_PIPELINE);
+	Framework::initialize();
+	Display *display = Framework::create_display(960, 600, ALLEGRO_OPENGL | ALLEGRO_PROGRAMMABLE_PIPELINE);
 	My3DProject *proj = new My3DProject(display);
 	MyGUIScreen *gui = new MyGUIScreen(display, proj);
-	af::run_loop();
+	Framework::run_loop();
 	return 0;
 }
 
