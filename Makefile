@@ -58,25 +58,25 @@ bin/vanilla_allegro$(EXE_EXTENSION): obj/vanilla_allegro.o
 
 
 
-obj/flare_main.o: flare_main.cpp
+obj/flare_main.o: programs/flare_main.cpp
 	g++ -o $@ -c -std=gnu++11 $< -I$(ALLEGRO_FLARE_DIR)/include -I$(ALLEGRO_DIR)/include
 
-obj/flare_gui_main.o: flare_gui_main.cpp
+obj/flare_gui_main.o: programs/flare_gui_main.cpp
 	g++ -o $@ -c -std=gnu++11 $< -I$(ALLEGRO_FLARE_DIR)/include -I$(ALLEGRO_DIR)/include
 
-obj/flare_3d_main.o: flare_3d_main.cpp
+obj/flare_3d_main.o: programs/flare_3d_main.cpp
 	g++ -o $@ -c -std=gnu++11 $< -I$(ALLEGRO_FLARE_DIR)/include -I$(ALLEGRO_DIR)/include
 
-obj/flare_3d_face.o: flare_3d_face.cpp
+obj/flare_3d_face.o: programs/flare_3d_face.cpp
 	g++ -o $@ -c -std=gnu++11 $< -I$(ALLEGRO_FLARE_DIR)/include -I$(ALLEGRO_DIR)/include
 
-obj/flare_3d_world.o: flare_3d_world.cpp
+obj/flare_3d_world.o: programs/flare_3d_world.cpp
 	g++ -o $@ -c -std=gnu++11 $< -I$(ALLEGRO_FLARE_DIR)/include -I$(ALLEGRO_DIR)/include
 
-obj/flare_3d_shadows.o: flare_3d_shadows.cpp
+obj/flare_3d_shadows.o: programs/flare_3d_shadows.cpp
 	g++ -o $@ -c -std=gnu++11 $< -I$(ALLEGRO_FLARE_DIR)/include -I$(ALLEGRO_DIR)/include
 
-obj/simple_3d.o: simple_3d.cpp
+obj/simple_3d.o: programs/simple_3d.cpp
 	g++ -o $@ -c -std=gnu++11 $< -I$(ALLEGRO_FLARE_DIR)/include -I$(ALLEGRO_DIR)/include
 
 obj/vanilla_allegro.o: vanilla_allegro.cpp
