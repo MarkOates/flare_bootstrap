@@ -24,7 +24,11 @@ OPENGL_LIB=-framework OpenGL
 
 
 
-all: bin/flare_main$(EXE_EXTENSION) bin/flare_gui_main$(EXE_EXTENSION) bin/flare_3d_main$(EXE_EXTENSION) bin/flare_3d_face$(EXE_EXTENSION) bin/flare_3d_world$(EXE_EXTENSION) bin/flare_3d_shadows$(EXE_EXTENSION) bin/simple_3d$(EXE_EXTENSION) bin/vanilla_allegro$(EXE_EXTENSION)
+ALL=bin/flare_main$(EXE_EXTENSION) bin/flare_gui_main$(EXE_EXTENSION) bin/flare_3d_main$(EXE_EXTENSION) bin/flare_3d_face$(EXE_EXTENSION) bin/flare_3d_world$(EXE_EXTENSION) bin/flare_3d_shadows$(EXE_EXTENSION) bin/simple_3d$(EXE_EXTENSION) bin/vanilla_allegro$(EXE_EXTENSION)
+
+
+
+all: $(ALL)
 
 
 
@@ -80,9 +84,12 @@ obj/vanilla_allegro.o: vanilla_allegro.cpp
 
 
 
+OBJ_BASENAMES=$(notdir $(basename $(ALL)))
+
+
 clean:
-	rm *.o
-	rm ./bin/*.exe
+	-rm $(addsuffix .o, $(addprefix obj/,$(OBJ_BASENAMES)))
+	-rm $(addsuffix $(EXE_EXTENSION), $(addprefix bin/,$(OBJ_BASENAMES)))
 
 
 
