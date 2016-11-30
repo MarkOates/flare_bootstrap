@@ -5,24 +5,24 @@
 
 
 
-class MyProject : public FGUIScreen
+class MyProject : public UIScreen
 {
 private:
-	FGUIButton *button;
+	UIButton *button;
 public:
-	MyProject(Display *display) : FGUIScreen(display), button(NULL)
+	MyProject(Display *display) : UIScreen(display), button(NULL)
 	{
 		// create our button
-		button = new FGUIButton(this, 200, 200, 140, 70, "Click Me!");
+		button = new UIButton(this, 200, 200, 140, 70, "Click Me!");
 	}
-	void on_message(FGUIWidget *sender, std::string message) override
+	void on_message(UIWidget *sender, std::string message) override
 	{
-		if (sender == button) // click is automatic message to parent for FGUIButton
+		if (sender == button) // click is automatic message to parent for UIButton
 		{
 			// animate the button around randomly when it gets clicked
-			af::motion.cmove_to(&button->place.position.x, random_float(100, 600), 0.4);
-			af::motion.cmove_to(&button->place.position.y, random_float(100, 500), 0.4);
-			af::motion.cmove_to(&button->place.rotation, random_float(-0.4, 0.4), 0.4);
+			Framework::motion().cmove_to(&button->place.position.x, random_float(100, 600), 0.4);
+			Framework::motion().cmove_to(&button->place.position.y, random_float(100, 500), 0.4);
+			Framework::motion().cmove_to(&button->place.rotation, random_float(-0.4, 0.4), 0.4);
 		}
 	}
 };
@@ -31,10 +31,10 @@ public:
 
 int main(int argc, char **argv)
 {
-	af::initialize();
-	Display *display = af::create_display();
+	Framework::initialize();
+	Display *display = Framework::create_display();
 	MyProject *proj = new MyProject(display);
-	af::run_loop();
+	Framework::run_loop();
 
 	return 0;
 }
